@@ -11,15 +11,18 @@ fs.readFile('schools', function (err, data) {
 
   var schools = data.toString().split('\n');
   var current = 0;
+  var startTime = (new Date()).getTime();
 
   requestNext(0);
 
   function requestNext (next) {
     requestId(current, function () {
-      if (++current < schools.length) {
+      if (++current < 10) {
         requestNext(current);
       } else {
-        console.log('done searching all');
+        var endTime = (new Date()).getTime();
+        var spentTime = parseInt((endTime - startTime) / 1000);
+        console.log('done searching all in ' + parseInt(spentTime / 60) + 'm' + (spentTime % 60) + 's');
       }
     });
   }
@@ -34,7 +37,7 @@ fs.readFile('schools', function (err, data) {
         var id = body.match(/"schoolid": "([0-9]*)",/).pop();
         requestDetail(index, id, callback);
       } else {
-        console.log('done searching #' + index + ': ' + schools[index]);
+        console.log('no id found when searching #' + index + ': ' + schools[index]);
         callback();
       }
     });
@@ -55,7 +58,7 @@ fs.readFile('schools', function (err, data) {
             }
           });
         } else {
-          console.log('done searching #' + index + ': ' + schools[index]);
+          console.log('found empty when searching #' + index + ': ' + schools[index]);
           callback();
         }
       } else {
