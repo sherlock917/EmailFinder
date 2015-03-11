@@ -14,8 +14,8 @@ fs.readFile('schools', function (err, data) {
 
   requestNext(0);
 
-  function requestNext(next) {
-    requestId(current, function() {
+  function requestNext (next) {
+    requestId(current, function () {
       if (++current < schools.length) {
         requestNext(current);
       } else {
