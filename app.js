@@ -17,7 +17,7 @@ fs.readFile('schools', function (err, data) {
 
   function requestNext (next) {
     requestId(current, function () {
-      if (++current < 10) {
+      if (++current < schools.length) {
         requestNext(current);
       } else {
         var endTime = (new Date()).getTime();
