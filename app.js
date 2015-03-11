@@ -1,23 +1,22 @@
-var fs = require('fs');
-var request = require('request');
-var cheerio = require('cheerio');
-var urlencode = require('urlencode');
+var fs = require('fs'),
+    request = require('request'),
+    cheerio = require('cheerio'),
+    urlencode = require('urlencode');
 
-var schools;
 fs.readFile('schools', function (err, data) {
 
-  if (!err) {
-    schools = data.toString().split('\n');
+  if (err) {
+    return;
   }
 
+  var schools = data.toString().split('\n');
   var current = 0;
 
   requestNext(0);
 
   function requestNext(next) {
     requestId(current, function() {
-      current++;
-      if (current < schools.length) {
+      if (++current < schools.length) {
         requestNext(current);
       } else {
         console.log('done searching all');
