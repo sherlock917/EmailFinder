@@ -13,6 +13,9 @@ fs.readFile('schools', function (err, data) {
   var current = 0;
   var startTime = (new Date()).getTime();
 
+  var fail = 0;
+  var success = 0;
+
   requestNext(0);
 
   function requestNext (next) {
@@ -23,6 +26,7 @@ fs.readFile('schools', function (err, data) {
         var endTime = (new Date()).getTime();
         var spentTime = parseInt((endTime - startTime) / 1000);
         console.log('done searching all in ' + parseInt(spentTime / 60) + 'm' + (spentTime % 60) + 's');
+        console.log(success + ' success, ' + fail + ' fail');
       }
     });
   }
@@ -37,6 +41,7 @@ fs.readFile('schools', function (err, data) {
         var id = body.match(/"schoolid": "([0-9]*)",/).pop();
         requestDetail(index, id, callback);
       } else {
+        fail++;
         console.log('no id found when searching #' + index + ': ' + schools[index]);
         callback();
       }
@@ -53,15 +58,18 @@ fs.readFile('schools', function (err, data) {
           result += '\n'
           fs.appendFile('result.txt', result, function (err) {
             if (!err) {
+              success++;
               console.log('done searching #' + index + ': ' + schools[index]);
               callback();
             }
           });
         } else {
+          fail++;
           console.log('found empty when searching #' + index + ': ' + schools[index]);
           callback();
         }
       } else {
+        fail++;
         console.log('error occured when searching #' + index + ': ' + schools[index]);
         callback();
       }
