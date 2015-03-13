@@ -10,11 +10,11 @@ fs.readFile('schools', function (err, data) {
   }
 
   var schools = data.toString().split('\n');
-  var current = 0;
-  var startTime = (new Date()).getTime();
 
+  var current = 0;
   var fail = 0;
   var success = 0;
+  var startTime = (new Date()).getTime();
 
   requestNext(0);
 
@@ -25,7 +25,7 @@ fs.readFile('schools', function (err, data) {
       } else {
         var endTime = (new Date()).getTime();
         var spentTime = parseInt((endTime - startTime) / 1000);
-        console.log('done searching all in ' + parseInt(spentTime / 60) + 'm' + (spentTime % 60) + 's');
+        console.log('done searching all in ' + parseInt(spentTime / 60) + 'm' + (spentTime % 60) + 's\n');
         console.log(success + ' success, ' + fail + ' fail');
       }
     });
